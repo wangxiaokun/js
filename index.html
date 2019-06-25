@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .sitebar{
+            border: 1px solid green;
+            /*background-color: green;*/
+            float: left;
+            width: 199px;
+        }
+        .content{
+            border: 1px solid green;
+            /*background-color: red;*/
+            margin-left: 200px;
+        }
+        .demo{
+            border: 1px solid green;
+        }
+    </style>
+    <script>
+function myFunction() {
+var url = "http://192.168.45.133:58080/api/98/5";
+var time = 1000;
+var timeout = false;
+var request = new XMLHttpRequest();
+
+var timer = setTimeout(function() {
+timeout = true;
+request.abort();
+}, time);
+
+request.open("GET", url);
+
+request.onreadystatechange = function() {
+if (request.readyState !== 4) {
+    return;
+}
+if (timeout) {
+    dorado.MessageBox.alert("timeout");
+    return;
+}
+clearTimeout(timer);
+if (request.status === 200) {
+    console.log(request.responseText);
+    document.getElementById("demo1").innerHTML=request.responseText
+}
+};
+request.send( null );
+}
+
+
+
+    </script>
+    <script>
+        window.onload = function() {
+            var url = "http://192.168.45.133:58080/api/98/6"
+            var request = new XMLHttpRequest()
+            request.onload = function() {
+                if (request.status == 200) {
+                    displayContent(request.responseText)
+                }
+            }
+            request.open("GET", url)
+            request.send(null)
+        }
+        
+        function displayContent(content) {
+            var p = document.getElementById("demo2")
+            p.innerHTML = content
+        }
+    </script>
+</head>
+<body>
+    <div class="sitebar">
+        <div>
+            <button type="button" onclick="myFunction()">左侧定宽200px区块</button>
+        </div>
+        <div>
+            <button type="button" onclick="myFunction()">左侧定宽200px区块</button>
+        </div>
+    </div>
+    <div class="content">
+        <div>
+            <p id="demo1" class="demo">右侧主体自适应区块</p>
+        </div>
+        <div>
+            <p id="demo2" class="demo"></p>
+        </div>
+    </div>
+</body>
+</html>
