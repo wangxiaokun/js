@@ -14,84 +14,75 @@
             float: left;
             width: 199px;
         }
+        .sitebar-item{
+            /*border: 1px solid red;*/
+            padding: 5px 5px 5px 5px;
+        }
+        .sitebar-button{
+            /*border: 1px solid blue;*/
+            /*background: #9cc;*/
+            font-size: 20px;
+            width: 190px;
+            height: 50px;
+        }
         .content{
             border: 1px solid green;
-            /*background-color: red;*/
+            /*background-color: green;*/
             margin-left: 200px;
         }
-        .demo{
+        .content-bar{
+            border: 1px solid red;
+            /*background: red;*/
+            font-size: 40px;
+        }
+        .content-body{
             border: 1px solid green;
+            /*background: green;*/
         }
     </style>
     <script>
-function myFunction() {
-var url = "http://192.168.45.133:58080/api/98/5";
-var time = 1000;
-var timeout = false;
-var request = new XMLHttpRequest();
-
-var timer = setTimeout(function() {
-timeout = true;
-request.abort();
-}, time);
-
-request.open("GET", url);
-
-request.onreadystatechange = function() {
-if (request.readyState !== 4) {
-    return;
-}
-if (timeout) {
-    dorado.MessageBox.alert("timeout");
-    return;
-}
-clearTimeout(timer);
-if (request.status === 200) {
-    console.log(request.responseText);
-    document.getElementById("demo1").innerHTML=request.responseText
-}
-};
-request.send( null );
-}
-
-
-
-    </script>
-    <script>
         window.onload = function() {
-            var url = "http://192.168.45.133:58080/api/98/6"
+            getThreadQueue()
+        }
+        
+        function getThreadQueue() {
+            var url = "http://10.17.36.101:8000/api/thread/queue"
             var request = new XMLHttpRequest()
             request.onload = function() {
                 if (request.status == 200) {
-                    displayContent(request.responseText)
+                    displayContent("content-beta", request.responseText)
                 }
             }
-            request.open("GET", url)
+            request.open("POST", url)
             request.send(null)
         }
         
-        function displayContent(content) {
-            var p = document.getElementById("demo2")
+        function displayContent(id, content) {
+            var p = document.getElementById(id)
             p.innerHTML = content
+        }
+        
+        function funServerAll(content) {
+            displayContent("content-beta", "功能正在开发中...敬请期待...")
+        }
+        
+        function funThreadQueue(content) {
+            getThreadQueue()
         }
     </script>
 </head>
 <body>
     <div class="sitebar">
-        <div>
-            <button type="button" onclick="myFunction()">左侧定宽200px区块</button>
+        <div class="sitebar-item">
+            <button class="sitebar-button" type="button" onclick="funServerAll()">服务器总览</button>
         </div>
-        <div>
-            <button type="button" onclick="myFunction()">左侧定宽200px区块</button>
+        <div class="sitebar-item">
+            <button class="sitebar-button" type="button" onclick="funThreadQueue()">组件线程队列</button>
         </div>
     </div>
     <div class="content">
-        <div>
-            <p id="demo1" class="demo">右侧主体自适应区块</p>
-        </div>
-        <div>
-            <p id="demo2" class="demo"></p>
-        </div>
+        <div id="content-alpha" class="content-bar">测试环境</div>
+        <div id="content-beta" class="content-body"></div>
     </div>
 </body>
 </html>
