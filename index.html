@@ -143,7 +143,8 @@ p.status-ok {color: #888;text-align: right;}
         }
         
         function funThreadQueue() {
-            displayContent("id-content-title", "组件线程队列"+getCurentTime())
+            displayContent("last-update", "Last update: "+getCurentTime())
+            displayContent("id-content-title", "组件线程队列")
             getThreadQueue()
             setTimeout('funThreadQueue()', 5000);
         }
@@ -208,10 +209,9 @@ p.status-ok {color: #888;text-align: right;}
         
             <div class="right-up-title">
                 <div style="font-size:40px;">测试环境</div>
-                <p style="font-size:20px;"><em>Thank you for flying OpenResty.</em></p>
+                <em><div id="last-update" style="font-size:20px;"></div></em>
             </div>
 
-            
             <div id="right-up-footer">
                 <!--
                   <div id="update-form">
