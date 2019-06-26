@@ -14,13 +14,21 @@
             font: 12px Verdana,sans-serif;
             color: #484848;
         }
-        .sitebar {
+        
+        /***************************************************/
+        
+        .left {
             border: 1px solid green;
-            border-right: 0px solid green;
+            /*border-right: 0px solid green;*/
             /*background-color: green;*/
             /*padding: 5px 5px 5px 5px;*/
             float: left;
             width: 199px;
+        }
+        /*********************/
+        .left-up {
+            /*border: 1px solid green;*/
+            border-bottom: 1px solid green;
         }
         .sitebar-img {
             /*border: 1px solid red;*/
@@ -32,34 +40,51 @@
             /*border: 1px solid red;*/
             padding: 15px 5px 5px 10px;
         }
-        .sitebar-button {
+        /*********************/
+        .left-down {
             /*border: 1px solid red;*/
             padding: 5px 5px 5px 0px;
         }
-        .sitebar-item {
+        .sitebar-button {
             /*border: 1px solid red;*/
             padding: 5px 5px 5px 5px;
         }
         .sitebar-button-inner {
-            /*border: 1px solid blue;*/
-            /*background: #9cc;*/
+            border: 1px solid green;
+            background: white;
             font-size: 20px;
             width: 185px;
             height: 50px;
         }
-        .content {
+        
+        /***************************************************/
+        
+        .right {
             border: 1px solid green;
             /*background-color: green;*/
             margin-left: 200px;
         }
-        .content-bar {
+        
+        .right-up {
             /*border: 1px solid green;*/
             border-bottom: 1px solid green;
-            padding: 10px 10px 10px 10px;
             /*background: red;*/
             /*font-size: 40px;*/
+            height: 150px;
+            width: 100%;
+            /*position: fixed;*/
+            overflow: hidden;
+        }
+        .right-up-title {
+            /*border: 1px solid green;*/
+            padding: 10px 10px 10px 10px;
+        }
+        .right-up-footer {
+            /*border: 1px solid red;*/
+            /*padding: 10px 10px 10px 10px;*/
         }
 
+/*
 #footer-inner { overflow: auto; width: 100%; /*border: 1px solid green;*/}
 #footer { overflow: auto; width: 100%; /*border: 1px solid green;*/}
 #footer-nav { padding-top: 5px; }
@@ -70,22 +95,30 @@
 #footer-nav ul li a:hover { color: #444; }
 #update-form { float: right; margin: 0; padding: 0; }
 #status { float: right; margin: 0; padding: 0; }
-/*p.status-ok {color: #888;text-align: right;}*/
-
-        .content-body {
-            border: 1px solid red;
+p.status-ok {color: #888;text-align: right;}
+*/
+        .right-down {
+            /*border: 1px solid green;*/
             /*background: red;*/
             /*font-size: 40px;*/
-            padding: 10px 10px 10px 10px;
+            /*padding: 10px 10px 10px 10px;*/
+            /*margin-top: 150px;*/
             height: 100%;
         }
-        .content-body-inner {
-            border: 1px solid blue;
+        .content-title {
+            /*border: 1px solid red;*/
+            font-size: 30px;
+            background: #8888881a;
+            padding: 5px 5px 5px 5px;
+        }
+        .content-body {
+            /*border: 1px solid blue;*/
+            padding: 10px 10px 10px 10px;
         }
     </style>
     <script>
         window.onload = function() {
-            getThreadQueue()
+            funThreadQueue()
         }
         
         function getThreadQueue() {
@@ -109,8 +142,10 @@
             displayContent("id-content-body", "功能正在开发中...敬请期待...")
         }
         
-        function funThreadQueue(content) {
+        function funThreadQueue() {
+            displayContent("id-content-title", "组件线程队列"+getCurentTime())
             getThreadQueue()
+            setTimeout('funThreadQueue()', 5000);
         }
         
         function getCurentTime() {
@@ -138,41 +173,47 @@
             clock += ss;
             return(clock);
         }
-
-        function myrefresh() {
-            window.location.reload()
-        }
         
-        setTimeout('myrefresh()', 5000); //指定1秒刷新一次
+        setTimeout('funThreadQueue()', 5000);
     </script>
 </head>
+
 <body>
-    <div class="sitebar">
-        <div class="sitebar-img">
-            <img class="sitebar-img-inner" src="img/logo.png">
+
+    <div class="left">
+        <div class="left-up">
+            <div class="sitebar-img">
+                <img class="sitebar-img-inner" src="img/logo.png">
+            </div>
         </div>
-        <div class="sitebar-button">
-            <div class="sitebar-item">
+        <div class="left-down">
+            <div class="sitebar-button">
                 <button class="sitebar-button-inner" type="button" onclick="funServerAll()">服务器总览</button>
             </div>
-            <div class="sitebar-item">
+            <div class="sitebar-button">
                 <button class="sitebar-button-inner" type="button" onclick="funThreadQueue()">组件线程队列</button>
             </div>
-            <div class="sitebar-item">
+            <div class="sitebar-button">
                 <button class="sitebar-button-inner" type="button" onclick="funServerAll()">MQ队列</button>
             </div>
-            <div class="sitebar-item">
+            <div class="sitebar-button">
                 <button class="sitebar-button-inner" type="button" onclick="funServerAll()">Redis服务</button>
             </div>
         </div>
     </div>
-    <div class="content">
-        <div id="content-alpha" class="content-bar">
-            <div style="font-size:40px;">测试环境</div>
-            <div id="current-time" style="font-size:20px;"></div>
-            <p style="font-size:20px;"><em>Thank you for flying OpenResty.</em></p>
+    
+    <div class="right">
+    
+        <div class="right-up">
+        
+            <div class="right-up-title">
+                <div style="font-size:40px;">测试环境</div>
+                <p style="font-size:20px;"><em>Thank you for flying OpenResty.</em></p>
+            </div>
+
             
-            <div id="footer-inner">
+            <div id="right-up-footer">
+                <!--
                   <div id="update-form">
                     <label for="update-every">Update </label>
                     <select id="update-every">
@@ -193,15 +234,21 @@
                         <p class="status-ok">Last update: 2019-06-25 21:01:45</p>
                     </div>
                 </div>
+                -->
             </div>
+            
+            
         </div>
         
-        
-        <div class="content-body">
-            <div class="content-body-inner">
-                <div id="id-content-body""></div>
+        <div class="right-down">
+            <div class="content-title">
+                <div id="id-content-title">ddd</div>
+            </div>
+            <div class="content-body">
+                <div id="id-content-body"></div>
             </div>
         </div>
     </div>
+    
 </body>
 </html>
