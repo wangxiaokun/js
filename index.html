@@ -2,42 +2,85 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <title>Document</title>
     <style>
         *{
             margin: 0;
             padding: 0;
+            /*height: 100%;*/
         }
-        .sitebar{
+        body {
+            font: 12px Verdana,sans-serif;
+            color: #484848;
+        }
+        .sitebar {
             border: 1px solid green;
+            border-right: 0px solid green;
             /*background-color: green;*/
+            /*padding: 5px 5px 5px 5px;*/
             float: left;
             width: 199px;
         }
-        .sitebar-item{
+        .sitebar-img {
+            /*border: 1px solid red;*/
+            padding: 5px 5px 5px 5px;
+            width: 189px;
+            height: 95px;
+        }
+        .sitebar-img-inner {
+            /*border: 1px solid red;*/
+            padding: 15px 5px 5px 10px;
+        }
+        .sitebar-button {
+            /*border: 1px solid red;*/
+            padding: 5px 5px 5px 0px;
+        }
+        .sitebar-item {
             /*border: 1px solid red;*/
             padding: 5px 5px 5px 5px;
         }
-        .sitebar-button{
+        .sitebar-button-inner {
             /*border: 1px solid blue;*/
             /*background: #9cc;*/
             font-size: 20px;
-            width: 190px;
+            width: 185px;
             height: 50px;
         }
-        .content{
+        .content {
             border: 1px solid green;
             /*background-color: green;*/
             margin-left: 200px;
         }
-        .content-bar{
+        .content-bar {
+            /*border: 1px solid green;*/
+            border-bottom: 1px solid green;
+            padding: 10px 10px 10px 10px;
+            /*background: red;*/
+            /*font-size: 40px;*/
+        }
+
+#footer-inner { overflow: auto; width: 100%; /*border: 1px solid green;*/}
+#footer { overflow: auto; width: 100%; /*border: 1px solid green;*/}
+#footer-nav { padding-top: 5px; }
+#footer-nav ul { float: left; list-style-type: none; padding: 0; margin: 0;}
+#footer-nav ul li { float: left; border-right: 1px solid #ccc; padding: 2px 5px 2px 0;}
+#footer-nav ul li + li { border-right: none; padding: 2px 5px;}
+#footer-nav ul li a { color: #888; text-decoration: none; }
+#footer-nav ul li a:hover { color: #444; }
+#update-form { float: right; margin: 0; padding: 0; }
+#status { float: right; margin: 0; padding: 0; }
+/*p.status-ok {color: #888;text-align: right;}*/
+
+        .content-body {
             border: 1px solid red;
             /*background: red;*/
-            font-size: 40px;
+            /*font-size: 40px;*/
+            padding: 10px 10px 10px 10px;
+            height: 100%;
         }
-        .content-body{
-            border: 1px solid green;
-            /*background: green;*/
+        .content-body-inner {
+            border: 1px solid blue;
         }
     </style>
     <script>
@@ -50,7 +93,7 @@
             var request = new XMLHttpRequest()
             request.onload = function() {
                 if (request.status == 200) {
-                    displayContent("content-beta", request.responseText)
+                    displayContent("id-content-body", request.responseText)
                 }
             }
             request.open("POST", url)
@@ -63,26 +106,102 @@
         }
         
         function funServerAll(content) {
-            displayContent("content-beta", "功能正在开发中...敬请期待...")
+            displayContent("id-content-body", "功能正在开发中...敬请期待...")
         }
         
         function funThreadQueue(content) {
             getThreadQueue()
         }
+        
+        function getCurentTime() {
+            var now = new Date();
+            var year = now.getFullYear();       //年
+            var month = now.getMonth() + 1;     //月
+            var day = now.getDate();            //日
+            var hh = now.getHours();            //时
+            var mm = now.getMinutes();          //分
+            var ss = now.getSeconds();           //秒
+            var clock = year + "-";
+            
+            if (month < 10)
+                clock += "0";
+            clock += month + "-";
+            if (day < 10)
+                clock += "0";
+            clock += day + " ";
+            if (hh < 10)
+                clock += "0";
+            clock += hh + ":";
+            if (mm < 10) clock += '0';
+            clock += mm + ":";
+            if (ss < 10) clock += '0';
+            clock += ss;
+            return(clock);
+        }
+
+        function myrefresh() {
+            window.location.reload()
+        }
+        
+        setTimeout('myrefresh()', 5000); //指定1秒刷新一次
     </script>
 </head>
 <body>
     <div class="sitebar">
-        <div class="sitebar-item">
-            <button class="sitebar-button" type="button" onclick="funServerAll()">服务器总览</button>
+        <div class="sitebar-img">
+            <img class="sitebar-img-inner" src="img/logo.png">
         </div>
-        <div class="sitebar-item">
-            <button class="sitebar-button" type="button" onclick="funThreadQueue()">组件线程队列</button>
+        <div class="sitebar-button">
+            <div class="sitebar-item">
+                <button class="sitebar-button-inner" type="button" onclick="funServerAll()">服务器总览</button>
+            </div>
+            <div class="sitebar-item">
+                <button class="sitebar-button-inner" type="button" onclick="funThreadQueue()">组件线程队列</button>
+            </div>
+            <div class="sitebar-item">
+                <button class="sitebar-button-inner" type="button" onclick="funServerAll()">MQ队列</button>
+            </div>
+            <div class="sitebar-item">
+                <button class="sitebar-button-inner" type="button" onclick="funServerAll()">Redis服务</button>
+            </div>
         </div>
     </div>
     <div class="content">
-        <div id="content-alpha" class="content-bar">测试环境</div>
-        <div id="content-beta" class="content-body"></div>
+        <div id="content-alpha" class="content-bar">
+            <div style="font-size:40px;">测试环境</div>
+            <div id="current-time" style="font-size:20px;"></div>
+            <p style="font-size:20px;"><em>Thank you for flying OpenResty.</em></p>
+            
+            <div id="footer-inner">
+                  <div id="update-form">
+                    <label for="update-every">Update </label>
+                    <select id="update-every">
+                      <option value="5000">every 5 seconds</option>
+                      <option value="30000">every 30 seconds</option>
+                      <option value="300000">every 5 minutes</option>
+                      <option value="">never</option>
+                    </select>
+                  </div>
+                <div id="footer">
+                      <div id="footer-nav">
+                        <ul>
+                          <li><a href="api/">HTTP API</a></li>
+                          <li><a href="cli/">Command Line</a></li>
+                        </ul>
+                      </div>
+                    <div id="status">
+                        <p class="status-ok">Last update: 2019-06-25 21:01:45</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="content-body">
+            <div class="content-body-inner">
+                <div id="id-content-body""></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
